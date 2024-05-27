@@ -76,12 +76,20 @@ const SuratMasukPage = () => {
       cancelButtonText: "Batal",
       confirmButtonText: "Hapus",
     }).then((result) => {
-      if (result.isConfirmed) {
+     if (result.isConfirmed) {
         DeleteSuratMasuk(id).then((res) => {
           setSurat((prev) => {
+            // Pastikan prev dan properti-propertinya terdefinisi
+            const updatedLetter = Array.isArray(prev?.letter)
+              ? prev.letter.filter((surat) => surat.id !== id)
+              : [];
+            const updatedFile = Array.isArray(prev?.file)
+              ? prev.file.filter((surat) => surat.id !== id)
+              : [];
+
             return {
-              letter: prev.letter.filter((surat) => surat.id !== id),
-              file: prev.file.filter((surat) => surat.id !== id),
+              letter: updatedLetter,
+              file: updatedFile
             };
           });
           Swal.fire({
@@ -89,7 +97,7 @@ const SuratMasukPage = () => {
             text: "Data berhasil dihapus",
             icon: "success",
             showConfirmButton: false,
-            timer: 1500,
+            timer: 1500
           });
         });
       }
