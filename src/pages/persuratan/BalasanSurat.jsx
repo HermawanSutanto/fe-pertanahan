@@ -187,7 +187,7 @@ const BalasanSuratPage = () => {
                 {!loading
                   ? null
                   : (
-                      (searchResults.length > 0
+                      (searchResults?.length > 0
                         ? searchResults
                         : surat?.replyletter || []) || []
                     ).map((item, index) => (
@@ -249,7 +249,7 @@ const BalasanSuratPage = () => {
           <button
             onClick={() => setSearchParams({ page: parseInt(page) + 1 })}
             className={`${
-              surat?.replyletter && surat.replyletter.length === 0
+              surat && surat.replyletter && surat.replyletter.length === 0
                 ? "hidden"
                 : null
             } right bg-secondary text-white font-semibold rounded-lg text-sm self-center py-0.5 text-center`}

@@ -23,14 +23,14 @@ import { BsReplyAll } from "react-icons/bs";
 import UseAuth from "../../hooks/UseAuth";
 import { useSearchParams } from "react-router-dom";
 
-const hideActionKakan = ["kakan"];
+const hideActionKakan = ["Kepala Kantor"];
 const hideActionSeksi = [
-  "tatausaha",
-  "seksi1",
-  "seksi2",
-  "seksi3",
-  "seksi4",
-  "seksi5"
+  "Kasubag. TU",
+  "Seksi Penetapan Hak & Pendaftaran",
+  "Seksi Survei & Pemetaan",
+  "Seksi Penataan & Pemberdayaan",
+  "Seksi Pengadaan Tanah & Pengembangan",
+  "Seksi Pengendalian & Penanganan Sengketa"
 ];
 
 const SuratMasukPage = () => {
