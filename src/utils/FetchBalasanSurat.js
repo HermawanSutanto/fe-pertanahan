@@ -5,8 +5,20 @@ const GetBalasanSurat = async (page) => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + sessionStorage.getItem("token"),
-    },
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    }
+  });
+  const json = await response.json();
+  return json;
+};
+
+const GetSearchBalasanSurat = async (typing) => {
+  const response = await fetch(url + "/show-reply?typing=" + typing, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    }
   });
   const json = await response.json();
   return json;
@@ -17,8 +29,8 @@ const DeleteBalasanSurat = async (id) => {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + sessionStorage.getItem("token"),
-    },
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    }
   });
   const json = await response.json();
   return json;
@@ -29,8 +41,8 @@ const GetDetailBalasan = async (id) => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + sessionStorage.getItem("token"),
-    },
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    }
   });
   const json = await response.json();
   return json;
@@ -41,9 +53,9 @@ const PostBalasanSurat = async (id, data) => {
   const response = await fetch(url + "/add-reply/" + id, {
     method: "POST",
     headers: {
-      Authorization: "Bearer " + sessionStorage.getItem("token"),
+      Authorization: "Bearer " + sessionStorage.getItem("token")
     },
-    body: data,
+    body: data
   });
   const json = await response.json();
   return json;
@@ -53,9 +65,9 @@ const PutBalasanSurat = async (id, data) => {
   const response = await fetch(url + "/update-reply/" + id, {
     method: "POST",
     headers: {
-      Authorization: "Bearer " + sessionStorage.getItem("token"),
+      Authorization: "Bearer " + sessionStorage.getItem("token")
     },
-    body: data,
+    body: data
   });
   const json = await response.json();
   return json;
@@ -66,8 +78,8 @@ const getShowFileBalas = async (id) => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + sessionStorage.getItem("token"),
-    },
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    }
   });
   const blob = await response.blob();
   const objectUrl = window.URL.createObjectURL(blob);
@@ -79,8 +91,8 @@ const GetBalasanSuratSpesifik = async (id) => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + sessionStorage.getItem("token"),
-    },
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    }
   });
   const json = await response.json();
   return json;
@@ -94,4 +106,5 @@ export {
   DeleteBalasanSurat,
   getShowFileBalas,
   GetBalasanSuratSpesifik,
+  GetSearchBalasanSurat
 };

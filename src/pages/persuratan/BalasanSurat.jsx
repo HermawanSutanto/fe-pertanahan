@@ -11,6 +11,7 @@ import {
   GetBalasanSurat,
   GetDetailBalasan,
   DeleteBalasanSurat,
+  GetSearchBalasanSurat
 } from "../../utils/FetchBalasanSurat";
 import Swal from "sweetalert2";
 import { ToastContainer, toast } from "react-toastify";
@@ -23,6 +24,8 @@ const hideActionKakan = ["kakan"];
 const BalasanSuratPage = () => {
   const auth = UseAuth();
   const [search, setSearch] = useState();
+  const [searchResults, setSearchResults] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const [surat, setSurat] = useState([]);
   const [detailSurat, setDetailSurat] = useState({});
@@ -36,6 +39,24 @@ const BalasanSuratPage = () => {
   const [id, setId] = useState();
   let [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || 1;
+
+  const HandlerSearch = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+
+    if (value) {
+      GetSearchBalasanSurat(value)
+        .then((res) => {
+          setSearchResults(res.data.replyletter); // Update state dengan hasil pencarian surat masuk
+        })
+        .catch((error) => {
+          console.error("Error fetching search results:", error);
+          setSearchResults([]); // Set state kembali menjadi array kosong jika terjadi error
+        });
+    } else {
+      setSearchResults([]); // Jika pencarian kosong, set state menjadi array kosong
+    }
+  };
 
   useEffect(() => {
     GetBalasanSurat(page).then((res) => {
@@ -53,7 +74,7 @@ const BalasanSuratPage = () => {
       confirmButtonColor: "#FB0017",
       cancelButtonColor: "#828282",
       cancelButtonText: "Batal",
-      confirmButtonText: "Hapus",
+      confirmButtonText: "Hapus"
     }).then((result) => {
       if (result.isConfirmed) {
         DeleteBalasanSurat(id).then((res) => {
@@ -61,9 +82,7 @@ const BalasanSuratPage = () => {
             {
               return {
                 ...prev,
-                replyletter: prev.replyletter.filter(
-                  (surat) => surat.id !== id
-                ),
+                replyletter: prev.replyletter.filter((surat) => surat.id !== id)
               };
             }
           });
@@ -72,7 +91,7 @@ const BalasanSuratPage = () => {
             text: "Data berhasil dihapus.",
             icon: "success",
             showConfirmButton: false,
-            timer: 1500,
+            timer: 1500
           });
         });
       }
@@ -94,7 +113,7 @@ const BalasanSuratPage = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined
       });
     } else if (status == false) {
       Swal.fire({
@@ -103,7 +122,7 @@ const BalasanSuratPage = () => {
         icon: "warning",
         iconColor: "#FB0017",
         showConfirmButton: false,
-        timer: 1000,
+        timer: 1000
       });
     } else {
       setModalEdit((prev) => !prev);
@@ -115,9 +134,6 @@ const BalasanSuratPage = () => {
       setDetail(res.data);
       setModalDetail((prev) => !prev);
     });
-  };
-  const HandlerSearch = (e) => {
-    setSearch(e.target.value);
   };
 
   return (
@@ -170,7 +186,11 @@ const BalasanSuratPage = () => {
               <tbody>
                 {!loading
                   ? null
-                  : surat?.replyletter?.map((item, index) => (
+                  : (
+                      (searchResults.length > 0
+                        ? searchResults
+                        : surat?.replyletter || []) || []
+                    ).map((item, index) => (
                       <tr
                         key={index}
                         className={`${
@@ -229,7 +249,9 @@ const BalasanSuratPage = () => {
           <button
             onClick={() => setSearchParams({ page: parseInt(page) + 1 })}
             className={`${
-              surat?.replyletter?.length == 0 ? "hidden" : null
+              surat?.replyletter && surat.replyletter.length === 0
+                ? "hidden"
+                : null
             } right bg-secondary text-white font-semibold rounded-lg text-sm self-center py-0.5 text-center`}
           >
             next
